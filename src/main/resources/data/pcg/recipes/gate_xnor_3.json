@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " T ",
+    " P ",
+    "RTR"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    },
+    "P": {
+      "item": "pcg:base_plate"
+    }
+  },
+  "result": {
+    "item": "pcg:gate_xnor_3"
+  }
+}

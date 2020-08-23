@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "RPR",
+    " R "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clock"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "P": {
+      "item": "pcg:base_plate"
+    }
+  },
+  "result": {
+    "item": "pcg:timer"
+  }
+}

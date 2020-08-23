@@ -1,0 +1,43 @@
+{
+  "block.pcg.gate_buffer": "Buffer Gate",
+  "block.pcg.gate_buffer_all": "Buffer Gate",
+  "block.pcg.gate_not": "NOT Gate",
+  "block.pcg.gate_not_all": "NOT Gate",
+  "block.pcg.gate_or_2": "OR Gate",
+  "block.pcg.gate_or_3": "OR Gate",
+  "block.pcg.gate_nor_2": "NOR Gate",
+  "block.pcg.gate_nor_3": "NOR Gate",
+  "block.pcg.gate_and_2": "AND Gate",
+  "block.pcg.gate_and_3": "AND Gate",
+  "block.pcg.gate_nand_2": "NAND Gate",
+  "block.pcg.gate_nand_3": "NAND Gate",
+  "block.pcg.gate_xor_2": "XOR Gate",
+  "block.pcg.gate_xor_3": "XOR Gate",
+  "block.pcg.gate_xnor_2": "XNOR Gate",
+  "block.pcg.gate_xnor_3": "XNOR Gate",
+
+  "block.pcg.sensor_day": "Day Sensor",
+  "block.pcg.sensor_night": "Night Sensor",
+  "block.pcg.sensor_rain": "Rain Sensor",
+  "block.pcg.sensor_thunder": "Thunder Sensor",
+  "block.pcg.sensor_chest_empty": "Empty Chest Sensor",
+  "block.pcg.sensor_chest_space": "Space Chest Sensor",
+  "block.pcg.sensor_chest_full": "Full Chest Sensor",
+  "block.pcg.sensor_rising_edge": "Rising Edge Sensor",
+  "block.pcg.sensor_falling_edge": "Falling Edge Sensor",
+
+  "block.pcg.latch_rs": "RS Latch",
+  "block.pcg.latch_sr": "SR Latch",
+  "block.pcg.latch_d": "D Latch",
+  "block.pcg.latch_toggle": "Toggle Latch",
+
+  "block.pcg.timer": "Timer",
+  "block.pcg.timer_on_delay": "On Delay Timer",
+  "block.pcg.timer_off_delay": "Off Delay Timer",
+
+  "item.pcg.base_plate": "Base Plate",
+
+  "gui.pcg.timer": "Timer",
+
+  "itemGroup.pc_gates": "PowerCraft Gates"
+}

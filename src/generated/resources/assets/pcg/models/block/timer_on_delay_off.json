@@ -1,0 +1,6 @@
+{
+  "parent": "pcg:block/gate",
+  "textures": {
+    "top": "pcg:blocks/timer_on_delay_off"
+  }
+}

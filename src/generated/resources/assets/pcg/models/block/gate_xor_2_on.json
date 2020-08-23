@@ -1,0 +1,6 @@
+{
+  "parent": "pcg:block/gate",
+  "textures": {
+    "top": "pcg:blocks/gate_xor_2_on"
+  }
+}

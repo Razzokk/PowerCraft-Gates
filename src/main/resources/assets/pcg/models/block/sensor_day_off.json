@@ -1,0 +1,6 @@
+{
+  "parent": "pcg:block/gate",
+  "textures": {
+    "top": "pcg:blocks/sensor_day_off"
+  }
+}
