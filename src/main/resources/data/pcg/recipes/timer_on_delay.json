@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "RPR",
+    " D "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clock"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "P": {
+      "item": "pcg:base_plate"
+    },
+    "D": {
+      "item": "minecraft:repeater"
+    }
+  },
+  "result": {
+    "item": "pcg:timer_on_delay"
+  }
+}
