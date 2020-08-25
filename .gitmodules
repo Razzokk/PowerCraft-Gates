@@ -1,0 +1,3 @@
+[submodule "lib/MC-Lib"]
+	path = lib/MC-Lib
+	url = https://github.com/Razzokk/MC-Lib.git
