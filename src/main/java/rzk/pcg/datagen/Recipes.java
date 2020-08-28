@@ -349,5 +349,15 @@ public class Recipes extends RecipeProvider
 				.key('R', Blocks.REPEATER)
 				.addCriterion("item", InventoryChangeTrigger.Instance.forItems(ModItems.BASE_PLATE))
 				.build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(ModBlocks.COUNTER)
+				.patternLine(" R ")
+				.patternLine("QPQ")
+				.patternLine(" R ")
+				.key('R', Items.REDSTONE)
+				.key('Q', Items.QUARTZ)
+				.key('P', ModItems.BASE_PLATE)
+				.addCriterion("item", InventoryChangeTrigger.Instance.forItems(ModItems.BASE_PLATE))
+				.build(consumer);
 	}
 }

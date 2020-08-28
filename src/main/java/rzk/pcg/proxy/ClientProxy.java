@@ -11,7 +11,6 @@ import rzk.pcg.client.render.CounterRenderer;
 import rzk.pcg.gui.GuiCounter;
 import rzk.pcg.gui.GuiTimer;
 import rzk.pcg.tile.TileCounter;
-import rzk.pcg.tile.TileTimer;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy implements IProxy

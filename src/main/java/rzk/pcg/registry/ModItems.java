@@ -3,7 +3,6 @@ package rzk.pcg.registry;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistry;
 import rzk.lib.mc.registry.ModRegistry;
 import rzk.pcg.PCGates;
 import rzk.pcg.item.ItemUtil;

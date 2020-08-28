@@ -15,7 +15,6 @@
   "block.pcg.gate_xor_3": "XOR Gate",
   "block.pcg.gate_xnor_2": "XNOR Gate",
   "block.pcg.gate_xnor_3": "XNOR Gate",
-
   "block.pcg.sensor_day": "Day Sensor",
   "block.pcg.sensor_night": "Night Sensor",
   "block.pcg.sensor_rain": "Rain Sensor",
@@ -25,22 +24,16 @@
   "block.pcg.sensor_chest_full": "Full Chest Sensor",
   "block.pcg.sensor_rising_edge": "Rising Edge Sensor",
   "block.pcg.sensor_falling_edge": "Falling Edge Sensor",
-
   "block.pcg.latch_rs": "RS Latch",
   "block.pcg.latch_sr": "SR Latch",
   "block.pcg.latch_d": "D Latch",
   "block.pcg.latch_toggle": "Toggle Latch",
-
   "block.pcg.timer": "Timer",
   "block.pcg.timer_on_delay": "On Delay Timer",
   "block.pcg.timer_off_delay": "Off Delay Timer",
-
   "block.pcg.counter": "Counter",
-
   "item.pcg.base_plate": "Base Plate",
-
   "gui.pcg.timer": "Timer",
   "gui.pcg.counter": "Counter",
-
   "itemGroup.pc_gates": "PowerCraft Gates"
 }

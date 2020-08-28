@@ -24,11 +24,11 @@ public class CounterRenderer extends TileEntityRenderer<TileCounter>
 	{
 		matrixStack.push();
 		FontRenderer fontrenderer = this.renderDispatcher.getFontRenderer();
-		matrixStack.translate(0.5, 0.19,0.5);
+		matrixStack.translate(0.5, 0.19, 0.5);
 		matrixStack.rotate(new Quaternion(270, 0, 180 - tile.getBlockState().get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle(), true));
 		matrixStack.scale(0.010416667f, -0.010416667f, 0.010416667f);
 		String s = String.valueOf(tile.getCounter());
-		float f3 = (float)(-fontrenderer.getStringWidth(s) / 2);
+		float f3 = (float) (-fontrenderer.getStringWidth(s) / 2);
 		fontrenderer.renderString(s, f3, -4, 0, false, matrixStack.getLast().getMatrix(), buffer, false, 0, combinedLight);
 		matrixStack.pop();
 	}

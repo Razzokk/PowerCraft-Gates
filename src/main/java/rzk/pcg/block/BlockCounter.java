@@ -13,12 +13,11 @@ import net.minecraft.world.World;
 import rzk.lib.mc.util.Utils;
 import rzk.pcg.PCGates;
 import rzk.pcg.tile.TileCounter;
-import rzk.pcg.tile.TileTimer;
-
-import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
+
+import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
 public class BlockCounter extends BlockGateEdgeBase
 {

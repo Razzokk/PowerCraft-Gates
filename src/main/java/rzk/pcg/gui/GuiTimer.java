@@ -18,13 +18,13 @@ import rzk.pcg.packet.PacketTimer;
 public class GuiTimer extends Screen
 {
 	public static final ResourceLocation GUI_TEXTURE = new ResourceLocation(PCGates.MODID, "textures/gui/timer.png");
+	int guiLeft;
+	int guiTop;
 	private TextFieldWidget delayField;
 	private int delay;
 	private BlockPos pos;
 	private int xSize;
 	private int ySize;
-	int guiLeft;
-	int guiTop;
 
 	public GuiTimer(int delay, BlockPos pos)
 	{

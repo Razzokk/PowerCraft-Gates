@@ -15,6 +15,11 @@ public class ItemModels extends ItemModelProvider
 		super(generator, modid, existingFileHelper);
 	}
 
+	public static String name(Item item)
+	{
+		return item.getRegistryName().getPath();
+	}
+
 	@Override
 	protected void registerModels()
 	{
@@ -32,11 +37,6 @@ public class ItemModels extends ItemModelProvider
 	{
 		Item item = block.asItem();
 		withExistingParent(name(item), modLoc("block/" + name(item) + "_off"));
-	}
-
-	public static String name(Item item)
-	{
-		return item.getRegistryName().getPath();
 	}
 
 	@Override

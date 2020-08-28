@@ -18,13 +18,13 @@ import rzk.pcg.packet.PacketHandler;
 public class GuiCounter extends Screen
 {
 	public static final ResourceLocation GUI_TEXTURE = new ResourceLocation(PCGates.MODID, "textures/gui/counter.png");
+	int guiLeft;
+	int guiTop;
 	private TextFieldWidget maxCountField;
 	private int maxCount;
 	private BlockPos pos;
 	private int xSize;
 	private int ySize;
-	int guiLeft;
-	int guiTop;
 
 	public GuiCounter(int maxCount, BlockPos pos)
 	{
