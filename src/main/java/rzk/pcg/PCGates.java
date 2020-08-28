@@ -33,7 +33,7 @@ public class PCGates
 
 	public static Comparator<ItemStack> comparator;
 
-	public static final ItemGroup ITEM_GROUP_PC_GATES = new ItemGroup("pc_gates")
+	public static final ItemGroup ITEM_GROUP_PC_GATES = new ItemGroup(MODID)
 	{
 
 		@Override
