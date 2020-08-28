@@ -4,10 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import rzk.lib.mc.tile.TileRedstoneDevice;
+import rzk.lib.util.ObjectUtils;
 import rzk.pcg.block.BlockTimer;
 import rzk.pcg.registry.ModBlocks;
 
@@ -52,12 +52,15 @@ public class TileTimer extends TileRedstoneDevice implements ITickableTileEntity
 		if (block instanceof BlockTimer.Delay)
 		{
 			setEnabled(false);
-			world.setBlockState(pos, getBlockState().with(BlockStateProperties.POWERED, ((BlockTimer.Delay) block).isOnTimer()));
+			ObjectUtils.cast(getBlockState().getBlock(), BlockTimer.Delay.class).ifPresent(blockTimer -> blockTimer.setPoweredState(getBlockState(), world, pos, blockTimer.isOnTimer()));
 		}
 		else
 		{
-			world.setBlockState(pos, getBlockState().with(BlockStateProperties.POWERED, true));
-			((BlockTimer) getBlockState().getBlock()).scheduleTickIfNotScheduled(world, pos, 2);
+			ObjectUtils.cast(getBlockState().getBlock(), BlockTimer.class).ifPresent(blockTimer ->
+			{
+				blockTimer.setPoweredState(getBlockState(), world, pos, true);
+				blockTimer.scheduleTickIfNotScheduled(world, pos, 2);
+			});
 		}
 	}
 

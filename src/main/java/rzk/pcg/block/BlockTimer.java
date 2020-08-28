@@ -17,11 +17,9 @@ import rzk.pcg.PCGates;
 import rzk.pcg.tile.TileTimer;
 
 import javax.annotation.Nullable;
-
 import java.util.Optional;
 
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
-import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 public class BlockTimer extends BlockGateEdgeBase
 {
@@ -118,7 +116,7 @@ public class BlockTimer extends BlockGateEdgeBase
 		{
 			setEnabled(world, pos, type == Type.ON);
 			if (type == Type.OFF)
-				world.setBlockState(pos, state.with(POWERED, true));
+				setPoweredState(state, world, pos, true);
 		}
 
 		@Override
@@ -126,7 +124,7 @@ public class BlockTimer extends BlockGateEdgeBase
 		{
 			setEnabled(world, pos, type == Type.OFF);
 			if (type == Type.ON)
-				world.setBlockState(pos, state.with(POWERED, false));
+				setPoweredState(state, world, pos, false);
 		}
 
 		@Override

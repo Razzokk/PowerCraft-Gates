@@ -7,9 +7,12 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntityType;
 import rzk.lib.mc.tile.TileRedstoneDevice;
 import rzk.lib.util.MathUtils;
+import rzk.lib.util.ObjectUtils;
+import rzk.pcg.block.BlockCounter;
 import rzk.pcg.registry.ModBlocks;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class TileCounter extends TileRedstoneDevice
 {
@@ -28,32 +31,21 @@ public class TileCounter extends TileRedstoneDevice
 	public void reset()
 	{
 		counter = 0;
-		if (getBlockState().get(BlockStateProperties.POWERED))
-			world.setBlockState(pos, getBlockState().with(BlockStateProperties.POWERED, false));
-		else
-			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+		count(0);
 		markDirty();
 	}
 
 	public void count(int amount)
 	{
 		counter = MathUtils.constrain(counter + amount, 0, maxCount);
+		Optional<BlockCounter> blockCounter = ObjectUtils.cast(getBlockState().getBlock(), BlockCounter.class);
 		if (counter >= maxCount && !getBlockState().get(BlockStateProperties.POWERED))
-			world.setBlockState(pos, getBlockState().with(BlockStateProperties.POWERED, true));
+			blockCounter.ifPresent(block -> block.setPoweredState(getBlockState(), world, pos, true));
 		else if (counter < maxCount && getBlockState().get(BlockStateProperties.POWERED))
-			world.setBlockState(pos, getBlockState().with(BlockStateProperties.POWERED, false));
+			blockCounter.ifPresent(block -> block.setPoweredState(getBlockState(), world, pos, false));
 		else
 			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 		markDirty();
-	}
-
-	public void setMaxCount(int maxCount)
-	{
-		if (maxCount >= 0)
-		{
-			this.maxCount = maxCount;
-			count(0);
-		}
 	}
 
 	public int getCounter()
@@ -64,6 +56,15 @@ public class TileCounter extends TileRedstoneDevice
 	public int getMaxCount()
 	{
 		return maxCount;
+	}
+
+	public void setMaxCount(int maxCount)
+	{
+		if (maxCount >= 0)
+		{
+			this.maxCount = maxCount;
+			count(0);
+		}
 	}
 
 	@Override

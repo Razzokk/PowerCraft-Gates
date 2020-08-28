@@ -94,6 +94,14 @@ public abstract class BlockRedstoneDevice extends BlockBase
 		world.notifyNeighborsOfStateExcept(blockpos, this, side.getOpposite());
 	}
 
+	public void setPoweredState(BlockState state, World world, BlockPos pos, boolean powered)
+	{
+		world.setBlockState(pos, state.with(POWERED, powered));
+		for (Direction side : Direction.Plane.HORIZONTAL)
+			if (isOutputSide(state, side))
+				updateNeighborsInFront(state, world, pos, side);
+	}
+
 	public void scheduleTickIfNotScheduled(World world, BlockPos pos, int delay)
 	{
 		if (!world.getPendingBlockTicks().isTickScheduled(pos, this))
@@ -105,7 +113,7 @@ public abstract class BlockRedstoneDevice extends BlockBase
 	{
 		Direction side = Utils.getFromBlockPos(pos, neighbor);
 		if (isInputSide(state, side))
-				onInputChanged(state, world, pos, side);
+			onInputChanged(state, world, pos, side);
 	}
 
 	@Override

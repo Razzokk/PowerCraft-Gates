@@ -11,7 +11,6 @@ import rzk.lib.mc.util.Utils;
 import java.util.Random;
 
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
-import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 public class BlockSensor extends BlockGateBase
 {
@@ -140,7 +139,7 @@ public class BlockSensor extends BlockGateBase
 		{
 			if (type == Type.RISING_EDGE)
 			{
-				world.setBlockState(pos, state.with(POWERED, true));
+				setPoweredState(state, world, pos, true);
 				scheduleTickIfNotScheduled(world, pos, 2);
 			}
 		}
@@ -150,7 +149,7 @@ public class BlockSensor extends BlockGateBase
 		{
 			if (type == Type.FALLING_EDGE)
 			{
-				world.setBlockState(pos, state.with(POWERED, true));
+				setPoweredState(state, world, pos, true);
 				scheduleTickIfNotScheduled(world, pos, 2);
 			}
 		}
