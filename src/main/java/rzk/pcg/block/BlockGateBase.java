@@ -38,7 +38,7 @@ public abstract class BlockGateBase extends BlockRedstoneDevice
 		setDefaultState(getDefaultState().with(HORIZONTAL_FACING, Direction.NORTH));
 	}
 
-	public abstract boolean shouldBePowered(BlockState state, World world, BlockPos pos);
+	protected abstract boolean shouldBePowered(BlockState state, World world, BlockPos pos);
 
 	@Override
 	public void onInputChanged(BlockState state, World world, BlockPos pos, Direction side)

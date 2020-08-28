@@ -1,7 +1,6 @@
 package rzk.pcg.block;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -13,13 +12,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.network.NetworkHooks;
+import rzk.lib.mc.util.Utils;
 import rzk.pcg.PCGates;
-import rzk.pcg.gui.TimerGui;
 import rzk.pcg.tile.TileTimer;
 
 import javax.annotation.Nullable;
+
+import java.util.Optional;
 
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
@@ -45,11 +44,10 @@ public class BlockTimer extends BlockGateEdgeBase
 		return side == facing || side == facing.rotateYCCW() || side == facing.rotateY();
 	}
 
-	public void setEnabled(World world, BlockPos pos, boolean enabled)
+	protected void setEnabled(World world, BlockPos pos, boolean enabled)
 	{
-		TileEntity tile = world.getTileEntity(pos);
-		if (tile instanceof TileTimer)
-			((TileTimer) tile).setEnabled(enabled);
+		if (!world.isRemote)
+			Utils.getTile(world, pos, TileTimer.class).ifPresent(tile -> tile.setEnabled(enabled));
 	}
 
 	@Override
@@ -71,12 +69,12 @@ public class BlockTimer extends BlockGateEdgeBase
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
 	{
-		TileEntity tile = worldIn.getTileEntity(pos);
-		if (tile instanceof TileTimer)
+		Optional<TileTimer> tile = Utils.getTile(world, pos, TileTimer.class);
+		if (world.isRemote && tile.isPresent())
 		{
-			PCGates.proxy.openTimerGui((TileTimer) tile, pos);
+			PCGates.proxy.openTimerGui(tile.get().getDelay(), pos);
 			return ActionResultType.SUCCESS;
 		}
 		return ActionResultType.PASS;

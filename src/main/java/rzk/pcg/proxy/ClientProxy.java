@@ -5,7 +5,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import rzk.pcg.gui.TimerGui;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import rzk.pcg.client.render.CounterRenderer;
+import rzk.pcg.gui.GuiCounter;
+import rzk.pcg.gui.GuiTimer;
+import rzk.pcg.tile.TileCounter;
 import rzk.pcg.tile.TileTimer;
 
 @OnlyIn(Dist.CLIENT)
@@ -17,9 +22,21 @@ public class ClientProxy implements IProxy
 		return Minecraft.getInstance().world;
 	}
 
-	@Override
-	public void openTimerGui(TileTimer tile, BlockPos pos)
+	@OnlyIn(Dist.CLIENT)
+	public void clientSetup(FMLClientSetupEvent event)
 	{
-		Minecraft.getInstance().displayGuiScreen(new TimerGui(tile.getDelay(), pos));
+		ClientRegistry.bindTileEntityRenderer(TileCounter.TYPE, CounterRenderer::new);
+	}
+
+	@Override
+	public void openTimerGui(int delay, BlockPos pos)
+	{
+		Minecraft.getInstance().displayGuiScreen(new GuiTimer(delay, pos));
+	}
+
+	@Override
+	public void openCounterGui(int maxCount, BlockPos pos)
+	{
+		Minecraft.getInstance().displayGuiScreen(new GuiCounter(maxCount, pos));
 	}
 }

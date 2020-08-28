@@ -15,22 +15,22 @@ import rzk.pcg.packet.PacketHandler;
 import rzk.pcg.packet.PacketTimer;
 
 @OnlyIn(Dist.CLIENT)
-public class TimerGui extends Screen
+public class GuiTimer extends Screen
 {
 	public static final ResourceLocation GUI_TEXTURE = new ResourceLocation(PCGates.MODID, "textures/gui/timer.png");
 	private TextFieldWidget delayField;
 	private int delay;
-	private BlockPos timerPos;
+	private BlockPos pos;
 	private int xSize;
 	private int ySize;
 	int guiLeft;
 	int guiTop;
 
-	public TimerGui(int delay, BlockPos timerPos)
+	public GuiTimer(int delay, BlockPos pos)
 	{
 		super(new TranslationTextComponent("gui.pcg.timer"));
 		this.delay = delay;
-		this.timerPos = timerPos;
+		this.pos = pos;
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class TimerGui extends Screen
 
 	private void sendDelayPacket()
 	{
-		PacketHandler.INSTANCE.sendToServer(new PacketTimer(Integer.parseInt(delayField.getText()), timerPos));
+		PacketHandler.INSTANCE.sendToServer(new PacketTimer(Integer.parseInt(delayField.getText()), pos));
 		minecraft.player.closeScreen();
 	}
 }

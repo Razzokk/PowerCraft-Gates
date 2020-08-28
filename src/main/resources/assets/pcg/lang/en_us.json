@@ -35,9 +35,12 @@
   "block.pcg.timer_on_delay": "On Delay Timer",
   "block.pcg.timer_off_delay": "Off Delay Timer",
 
+  "block.pcg.counter": "Counter",
+
   "item.pcg.base_plate": "Base Plate",
 
   "gui.pcg.timer": "Timer",
+  "gui.pcg.counter": "Counter",
 
   "itemGroup.pc_gates": "PowerCraft Gates"
 }

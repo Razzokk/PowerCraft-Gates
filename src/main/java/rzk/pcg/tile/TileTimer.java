@@ -43,6 +43,7 @@ public class TileTimer extends TileRedstoneDevice implements ITickableTileEntity
 	{
 		enabled = state;
 		currentTicks = 0;
+		markDirty();
 	}
 
 	private void setTimerState()
@@ -53,7 +54,7 @@ public class TileTimer extends TileRedstoneDevice implements ITickableTileEntity
 			setEnabled(false);
 			world.setBlockState(pos, getBlockState().with(BlockStateProperties.POWERED, ((BlockTimer.Delay) block).isOnTimer()));
 		}
-		else if (block instanceof BlockTimer)
+		else
 		{
 			world.setBlockState(pos, getBlockState().with(BlockStateProperties.POWERED, true));
 			((BlockTimer) getBlockState().getBlock()).scheduleTickIfNotScheduled(world, pos, 2);

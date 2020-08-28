@@ -23,6 +23,7 @@ public class PacketHandler
 	public static void registerMessages()
 	{
 		registerMessage(PacketTimer.class, PacketTimer::new);
+		registerMessage(PacketCounter.class, PacketCounter::new);
 	}
 
 	public static <P extends Packet> void registerMessage(Class<P> packetType, Function<PacketBuffer, P> decoder)
