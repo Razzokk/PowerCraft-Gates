@@ -13,12 +13,13 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import rzk.lib.mc.registry.IModRegistry;
 import rzk.pcg.packet.PacketHandler;
 import rzk.pcg.proxy.ClientProxy;
 import rzk.pcg.proxy.IProxy;
 import rzk.pcg.proxy.ServerProxy;
 import rzk.pcg.registry.ModBlocks;
+import rzk.pcg.registry.ModItems;
+import rzk.pcg.registry.ModTiles;
 
 import java.util.Comparator;
 
@@ -28,11 +29,12 @@ public class PCGates
 	public static final String MODID = "pcg";
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	public static IProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+	public static IProxy proxy = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 
 	public static Comparator<ItemStack> comparator;
 
-	public static final ItemGroup ITEM_GROUP_PC_GATES = new ItemGroup("pc_gates") {
+	public static final ItemGroup ITEM_GROUP_PC_GATES = new ItemGroup(MODID)
+	{
 
 		@Override
 		@OnlyIn(Dist.CLIENT)
@@ -54,13 +56,16 @@ public class PCGates
 	{
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-		eventBus.register(IModRegistry.class);
+		eventBus.register(ModBlocks.class);
+		eventBus.register(ModItems.class);
+		eventBus.register(ModTiles.class);
 		eventBus.addListener(this::preInit);
+		eventBus.addListener(proxy::clientSetup);
 	}
 
 	private void preInit(FMLCommonSetupEvent event)
 	{
 		PacketHandler.registerMessages();
-		comparator = Ordering.explicit(IModRegistry.ITEMS).onResultOf(ItemStack::getItem);
+		comparator = Ordering.explicit(ModItems.ITEMS).onResultOf(ItemStack::getItem);
 	}
 }

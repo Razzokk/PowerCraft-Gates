@@ -7,6 +7,6 @@ public class ItemUtil extends Item
 {
 	public ItemUtil()
 	{
-		super(new Item.Properties().group(PCGates.ITEM_GROUP_PC_GATES));
+		super(new Properties().group(PCGates.ITEM_GROUP_PC_GATES));
 	}
 }

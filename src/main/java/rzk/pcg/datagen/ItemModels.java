@@ -5,7 +5,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import rzk.lib.mc.registry.IModRegistry;
+import rzk.pcg.registry.ModBlocks;
 import rzk.pcg.registry.ModItems;
 
 public class ItemModels extends ItemModelProvider
@@ -15,10 +15,15 @@ public class ItemModels extends ItemModelProvider
 		super(generator, modid, existingFileHelper);
 	}
 
+	public static String name(Item item)
+	{
+		return item.getRegistryName().getPath();
+	}
+
 	@Override
 	protected void registerModels()
 	{
-		IModRegistry.BLOCKS.forEach(this::gate);
+		ModBlocks.BLOCKS.forEach(this::gate);
 		simpleItem(ModItems.BASE_PLATE);
 	}
 
@@ -32,11 +37,6 @@ public class ItemModels extends ItemModelProvider
 	{
 		Item item = block.asItem();
 		withExistingParent(name(item), modLoc("block/" + name(item) + "_off"));
-	}
-
-	public static String name(Item item)
-	{
-		return item.getRegistryName().getPath();
 	}
 
 	@Override

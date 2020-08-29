@@ -20,7 +20,12 @@ archivesBaseName = "${mod_name}"
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    
+    repositories {
+        maven {
+            url 'https://www.dogforce-games.com/maven/'
+        }
+    }
+
     mappings channel: 'snapshot', version: "${mc_mappings}"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
@@ -70,7 +75,7 @@ minecraft {
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'pcg', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources')
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             environment 'target', 'fmluserdevdata'
 
@@ -85,6 +90,30 @@ minecraft {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${forge_version}"
+}
+
+private void createReleaseTag() {
+    def tagName = "release/v${mod_version}"
+    def tagDesc = "Release ${mc_version}-v${mod_version}"
+    try {
+        runCommands("git", "tag", "-d", tagName)
+    } catch (Exception e) {
+        println(e.message)
+    }
+    runCommands("git", "status")
+    runCommands("git", "tag", "-a", tagName, "-m", tagDesc)
+}
+
+private String runCommands(String... commands) {
+    def process = new ProcessBuilder(commands).redirectErrorStream(true).start()
+    process.waitFor()
+    def result = ''
+    process.inputStream.eachLine { result += it + '\n' }
+    def errorResult = process.exitValue() == 0
+    if (!errorResult) {
+        throw new IllegalStateException(result)
+    }
+    return result
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

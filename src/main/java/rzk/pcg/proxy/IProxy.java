@@ -2,11 +2,15 @@ package rzk.pcg.proxy;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import rzk.pcg.tile.TileTimer;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public interface IProxy
 {
 	World getClientWorld();
 
-	void openTimerGui(TileTimer tile, BlockPos pos);
+	void clientSetup(FMLClientSetupEvent event);
+
+	void openTimerGui(int delay, BlockPos pos);
+
+	void openCounterGui(int maxCount, BlockPos pos);
 }

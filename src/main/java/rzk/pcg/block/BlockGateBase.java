@@ -25,8 +25,8 @@ import rzk.pcg.PCGates;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 public abstract class BlockGateBase extends BlockRedstoneDevice
 {
@@ -34,11 +34,11 @@ public abstract class BlockGateBase extends BlockRedstoneDevice
 
 	public BlockGateBase()
 	{
-		super(Block.Properties.create(Material.ROCK));
+		super(Properties.create(Material.ROCK));
 		setDefaultState(getDefaultState().with(HORIZONTAL_FACING, Direction.NORTH));
 	}
 
-	public abstract boolean shouldBePowered(BlockState state, World world, BlockPos pos);
+	protected abstract boolean shouldBePowered(BlockState state, World world, BlockPos pos);
 
 	@Override
 	public void onInputChanged(BlockState state, World world, BlockPos pos, Direction side)
@@ -51,12 +51,7 @@ public abstract class BlockGateBase extends BlockRedstoneDevice
 	{
 		boolean shouldBePowered = shouldBePowered(state, world, pos);
 		if (state.get(POWERED) != shouldBePowered)
-		{
-			world.setBlockState(pos, state.with(POWERED, shouldBePowered));
-			for (Direction side : Direction.Plane.HORIZONTAL)
-				if (isOutputSide(state, side))
-					updateNeighborsInFront(state, world, pos, side);
-		}
+			setPoweredState(state, world, pos, shouldBePowered);
 	}
 
 	@Override

@@ -22,9 +22,25 @@ public class BlockGateBasic extends BlockGateBase
 		Direction facing = state.get(HORIZONTAL_FACING);
 		switch (type)
 		{
-			case BUFFER: case BUFFER_ALL: case NOT: case NOT_ALL: return side == facing.getOpposite();
-			case OR_2: case NOR_2: case AND_2: case NAND_2: case XOR_2: case XNOR_2: return side != facing & side != facing.getOpposite();
-			case OR_3: case NOR_3: case AND_3: case NAND_3: case XOR_3: case XNOR_3: return side != facing;
+			case BUFFER:
+			case BUFFER_ALL:
+			case NOT:
+			case NOT_ALL:
+				return side == facing.getOpposite();
+			case OR_2:
+			case NOR_2:
+			case AND_2:
+			case NAND_2:
+			case XOR_2:
+			case XNOR_2:
+				return side != facing & side != facing.getOpposite();
+			case OR_3:
+			case NOR_3:
+			case AND_3:
+			case NAND_3:
+			case XOR_3:
+			case XNOR_3:
+				return side != facing;
 		}
 		return false;
 	}
@@ -50,20 +66,36 @@ public class BlockGateBasic extends BlockGateBase
 
 		switch (type)
 		{
-			case BUFFER: case BUFFER_ALL: return back;
-			case NOT: case NOT_ALL: return !back;
-			case OR_2: return left || right;
-			case OR_3: return left || back ||  right;
-			case NOR_2: return !(left || right);
-			case NOR_3: return !(left || back ||  right);
-			case AND_2: return left && right;
-			case AND_3: return left && back ||  right;
-			case NAND_2: return !(left && right);
-			case NAND_3: return !(left && back &&  right);
-			case XOR_2: return left && !right || !left && right;
-			case XOR_3: return left && !back && !right || !left && back && !right || !left && !back && right;
-			case XNOR_2: return !(left && !right || !left && right);
-			case XNOR_3: return !(left && !back && !right || !left && back && !right || !left && !back && right);
+			case BUFFER:
+			case BUFFER_ALL:
+				return back;
+			case NOT:
+			case NOT_ALL:
+				return !back;
+			case OR_2:
+				return left || right;
+			case OR_3:
+				return left || back || right;
+			case NOR_2:
+				return !(left || right);
+			case NOR_3:
+				return !(left || back || right);
+			case AND_2:
+				return left && right;
+			case AND_3:
+				return left && back || right;
+			case NAND_2:
+				return !(left && right);
+			case NAND_3:
+				return !(left && back && right);
+			case XOR_2:
+				return left && !right || !left && right;
+			case XOR_3:
+				return left && !back && !right || !left && back && !right || !left && !back && right;
+			case XNOR_2:
+				return !(left && !right || !left && right);
+			case XNOR_3:
+				return !(left && !back && !right || !left && back && !right || !left && !back && right);
 		}
 		return false;
 	}

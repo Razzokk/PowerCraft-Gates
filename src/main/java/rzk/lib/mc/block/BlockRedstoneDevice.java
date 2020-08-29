@@ -10,10 +10,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
-import rzk.lib.mc.util.DirectionUtils;
+import rzk.lib.mc.util.Utils;
 
 import javax.annotation.Nullable;
-
 import java.util.EnumSet;
 
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
@@ -26,12 +25,12 @@ public abstract class BlockRedstoneDevice extends BlockBase
 		setDefaultState(stateContainer.getBaseState().with(POWERED, false));
 	}
 
-	public boolean isInputSide(BlockState state, Direction side)
+	protected boolean isInputSide(BlockState state, Direction side)
 	{
 		return false;
 	}
 
-	public boolean isOutputSide(BlockState state, Direction side)
+	protected boolean isOutputSide(BlockState state, Direction side)
 	{
 		return false;
 	}
@@ -45,7 +44,7 @@ public abstract class BlockRedstoneDevice extends BlockBase
 		return false;
 	}
 
-	public int getInputPower(World world, BlockPos pos, Direction side)
+	protected int getInputPower(World world, BlockPos pos, Direction side)
 	{
 		BlockPos blockpos = pos.offset(side);
 		int i = world.getRedstonePower(blockpos, side);
@@ -55,7 +54,7 @@ public abstract class BlockRedstoneDevice extends BlockBase
 		return Math.max(i, state.getBlock().equals(Blocks.REDSTONE_WIRE) ? state.get(RedstoneWireBlock.POWER) : 0);
 	}
 
-	public boolean isPowered(World world, BlockPos pos, Direction... sides)
+	protected boolean isPowered(World world, BlockPos pos, Direction... sides)
 	{
 		if (sides == null || sides.length == 0)
 			return isPowered(world, pos, Direction.values());
@@ -67,7 +66,7 @@ public abstract class BlockRedstoneDevice extends BlockBase
 		return false;
 	}
 
-	public int getOutputPower(BlockState state, IBlockReader world, BlockPos pos, Direction side)
+	protected int getOutputPower(BlockState state, IBlockReader world, BlockPos pos, Direction side)
 	{
 		return state.get(POWERED) && isOutputSide(state, side) ? 15 : 0;
 	}
@@ -84,15 +83,23 @@ public abstract class BlockRedstoneDevice extends BlockBase
 		return getOutputPower(state, world, pos, side.getOpposite());
 	}
 
-	public void onInputChanged(BlockState state, World world, BlockPos pos, Direction side) {}
+	protected void onInputChanged(BlockState state, World world, BlockPos pos, Direction side) {}
 
-	public void updateNeighborsInFront(BlockState state, World world, BlockPos pos, Direction side)
+	protected void updateNeighborsInFront(BlockState state, World world, BlockPos pos, Direction side)
 	{
 		BlockPos blockpos = pos.offset(side);
 		if (ForgeEventFactory.onNeighborNotify(world, pos, world.getBlockState(pos), EnumSet.of(side), false).isCanceled())
 			return;
 		world.neighborChanged(blockpos, this, pos);
 		world.notifyNeighborsOfStateExcept(blockpos, this, side.getOpposite());
+	}
+
+	public void setPoweredState(BlockState state, World world, BlockPos pos, boolean powered)
+	{
+		world.setBlockState(pos, state.with(POWERED, powered));
+		for (Direction side : Direction.Plane.HORIZONTAL)
+			if (isOutputSide(state, side))
+				updateNeighborsInFront(state, world, pos, side);
 	}
 
 	public void scheduleTickIfNotScheduled(World world, BlockPos pos, int delay)
@@ -104,9 +111,9 @@ public abstract class BlockRedstoneDevice extends BlockBase
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos neighbor, boolean isMoving)
 	{
-		Direction side = DirectionUtils.getFromBlockPos(pos, neighbor);
+		Direction side = Utils.getFromBlockPos(pos, neighbor);
 		if (isInputSide(state, side))
-				onInputChanged(state, world, pos, side);
+			onInputChanged(state, world, pos, side);
 	}
 
 	@Override

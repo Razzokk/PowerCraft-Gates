@@ -1,8 +1,7 @@
-package rzk.lib.mc.block;
+package rzk.lib.mc.item;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
-
 import net.minecraft.item.Item;
 
 public interface IItemProvider

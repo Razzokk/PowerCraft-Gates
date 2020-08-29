@@ -4,8 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.*;
-import rzk.lib.mc.registry.IModRegistry;
+import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.client.model.generators.ModelFile;
+import rzk.pcg.registry.ModBlocks;
 
 import java.util.function.Function;
 
@@ -24,7 +27,7 @@ public class BlockModels extends BlockStateProvider
 	@Override
 	protected void registerStatesAndModels()
 	{
-		IModRegistry.BLOCKS.forEach(this::gate);
+		ModBlocks.BLOCKS.forEach(this::gate);
 	}
 
 	public void gate(Block block)

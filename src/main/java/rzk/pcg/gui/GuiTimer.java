@@ -16,22 +16,22 @@ import rzk.pcg.packet.PacketHandler;
 import rzk.pcg.packet.PacketTimer;
 
 @OnlyIn(Dist.CLIENT)
-public class TimerGui extends Screen
+public class GuiTimer extends Screen
 {
 	public static final ResourceLocation GUI_TEXTURE = new ResourceLocation(PCGates.MODID, "textures/gui/timer.png");
-	private TextFieldWidget delayField;
-	private int delay;
-	private BlockPos timerPos;
-	private int xSize;
-	private int ySize;
 	int guiLeft;
 	int guiTop;
+	private TextFieldWidget delayField;
+	private int delay;
+	private BlockPos pos;
+	private int xSize;
+	private int ySize;
 
-	public TimerGui(int delay, BlockPos timerPos)
+	public GuiTimer(int delay, BlockPos pos)
 	{
 		super(new TranslationTextComponent("gui.pcg.timer"));
 		this.delay = delay;
-		this.timerPos = timerPos;
+		this.pos = pos;
 	}
 
 	@Override
@@ -59,7 +59,6 @@ public class TimerGui extends Screen
 		delayField.setMaxStringLength(35);
 		delayField.setText("" + delay);
 		children.add(delayField);
-		setListener(delayField);
 		setFocusedDefault(delayField);
 		addButton(new Button(width / 2 - 24, guiTop + ySize - 28, 48, 20, new TranslationTextComponent("gui.done"), onPress -> sendDelayPacket()));
 	}
@@ -86,13 +85,13 @@ public class TimerGui extends Screen
 	protected void drawGuiBackgroundTexture(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
 	{
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-		blit(matrixStack, guiLeft, guiTop, 0, 0, xSize, ySize);
+		this.minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
+		this.blit(matrixStack, guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 
 	private void sendDelayPacket()
 	{
-		PacketHandler.INSTANCE.sendToServer(new PacketTimer(Integer.parseInt(delayField.getText()), timerPos));
+		PacketHandler.INSTANCE.sendToServer(new PacketTimer(Integer.parseInt(delayField.getText()), pos));
 		minecraft.player.closeScreen();
 	}
 }

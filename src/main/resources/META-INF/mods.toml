@@ -1,25 +1,26 @@
-modLoader="javafml"
-loaderVersion="[33,)"
-license="All rights reserved"
+modLoader = "javafml"
+loaderVersion = "[31,)"
+
+license="GNU Genereal Public License v3"
 
 [[mods]]
-modId="pcg"
-version="${file.jarVersion}"
-displayName="PowerCraft Gates"
-logoFile="pcgates.png"
-authors="Razzokk"
-description='''PowerCraft Gates is a Mod that brings back the old Gates from PowerCraft'''
+modId = "pcg"
+version = "${file.jarVersion}"
+displayName = "PowerCraft Gates"
+logoFile = "pcgates.png"
+authors = "Razzokk"
+description = '''PowerCraft Gates is a Mod that brings back the old Gates from PowerCraft'''
 
 [[dependencies.pcg]]
-    modId="forge"
-    mandatory=true
-    versionRange="[33,)"
-    ordering="NONE"
-    side="BOTH"
+modId = "forge"
+mandatory = true
+versionRange = "[31,)"
+ordering = "NONE"
+side = "BOTH"
 
 [[dependencies.pcg]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.16.2]"
-    ordering="NONE"
-    side="BOTH"
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.2]"
+ordering = "NONE"
+side = "BOTH"

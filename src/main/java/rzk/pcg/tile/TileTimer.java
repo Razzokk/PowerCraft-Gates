@@ -5,10 +5,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import rzk.lib.mc.tile.TileRedstoneDevice;
+import rzk.lib.util.ObjectUtils;
 import rzk.pcg.block.BlockTimer;
 import rzk.pcg.registry.ModBlocks;
 
@@ -44,6 +44,7 @@ public class TileTimer extends TileRedstoneDevice implements ITickableTileEntity
 	{
 		enabled = state;
 		currentTicks = 0;
+		markDirty();
 	}
 
 	private void setTimerState()
@@ -52,12 +53,15 @@ public class TileTimer extends TileRedstoneDevice implements ITickableTileEntity
 		if (block instanceof BlockTimer.Delay)
 		{
 			setEnabled(false);
-			world.setBlockState(pos, getBlockState().with(BlockStateProperties.POWERED, ((BlockTimer.Delay) block).isOnTimer()));
+			ObjectUtils.cast(getBlockState().getBlock(), BlockTimer.Delay.class).ifPresent(blockTimer -> blockTimer.setPoweredState(getBlockState(), world, pos, blockTimer.isOnTimer()));
 		}
-		else if (block instanceof BlockTimer)
+		else
 		{
-			world.setBlockState(pos, getBlockState().with(BlockStateProperties.POWERED, true));
-			((BlockTimer) getBlockState().getBlock()).scheduleTickIfNotScheduled(world, pos, 2);
+			ObjectUtils.cast(getBlockState().getBlock(), BlockTimer.class).ifPresent(blockTimer ->
+			{
+				blockTimer.setPoweredState(getBlockState(), world, pos, true);
+				blockTimer.scheduleTickIfNotScheduled(world, pos, 2);
+			});
 		}
 	}
 
@@ -96,7 +100,7 @@ public class TileTimer extends TileRedstoneDevice implements ITickableTileEntity
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
 	{
 		super.onDataPacket(net, pkt);
-		handleUpdateTag(world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
+		handleUpdateTag(getBlockState(), pkt.getNbtCompound());
 	}
 
 	@Override

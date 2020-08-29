@@ -1,11 +1,10 @@
 package rzk.pcg.proxy;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import rzk.pcg.tile.TileTimer;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @OnlyIn(Dist.DEDICATED_SERVER)
 public class ServerProxy implements IProxy
@@ -17,6 +16,11 @@ public class ServerProxy implements IProxy
 	}
 
 	@Override
-	public void openTimerGui(TileTimer tile, BlockPos pos)
-	{}
+	public void clientSetup(FMLClientSetupEvent event) {}
+
+	@Override
+	public void openTimerGui(int delay, BlockPos pos) {}
+
+	@Override
+	public void openCounterGui(int maxCount, BlockPos pos) {}
 }

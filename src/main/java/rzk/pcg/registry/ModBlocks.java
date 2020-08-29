@@ -1,16 +1,19 @@
 package rzk.pcg.registry;
 
 import net.minecraft.block.Block;
-import net.minecraftforge.registries.IForgeRegistry;
-import rzk.lib.mc.registry.IModRegistry;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import rzk.lib.mc.registry.ModRegistry;
 import rzk.pcg.PCGates;
-import rzk.pcg.block.BlockGateBasic;
-import rzk.pcg.block.BlockLatch;
-import rzk.pcg.block.BlockSensor;
-import rzk.pcg.block.BlockTimer;
+import rzk.pcg.block.*;
 
-public final class ModBlocks implements IModRegistry
+import java.util.ArrayList;
+import java.util.List;
+
+public final class ModBlocks
 {
+	public static final List<Block> BLOCKS = new ArrayList<>();
+
 	// Basic
 	public static final Block GATE_BUFFER = registerBlock(new BlockGateBasic(BlockGateBasic.Type.BUFFER), "gate_buffer");
 	public static final Block GATE_BUFFER_ALL = registerBlock(new BlockGateBasic(BlockGateBasic.Type.BUFFER_ALL), "gate_buffer_all");
@@ -51,10 +54,17 @@ public final class ModBlocks implements IModRegistry
 	public static final Block TIMER_ON_DELAY = registerBlock(new BlockTimer.Delay(BlockTimer.Delay.Type.ON), "timer_on_delay");
 	public static final Block TIMER_OFF_DELAY = registerBlock(new BlockTimer.Delay(BlockTimer.Delay.Type.OFF), "timer_off_delay");
 
-	public static void registerBlocks(IForgeRegistry<Block> registry) {}
+	// Counter
+	public static final Block COUNTER = registerBlock(new BlockCounter(), "counter");
+
+	@SubscribeEvent
+	public static void registerBlocks(RegistryEvent.Register<Block> event)
+	{
+		BLOCKS.forEach(event.getRegistry()::register);
+	}
 
 	public static Block registerBlock(Block block, String name)
 	{
-		return IModRegistry.registerBlock(PCGates.MODID, block, name);
+		return ModRegistry.registerBlock(BLOCKS, ModItems.ITEMS, PCGates.MODID, block, name);
 	}
 }

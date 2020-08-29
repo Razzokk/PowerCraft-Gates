@@ -42,7 +42,6 @@ public class TileRedstoneDevice extends TileEntity implements ITileRedstoneState
 		return compound;
 	}
 
-
 	@Override
 	public void read(BlockState state, CompoundNBT compound)
 	{

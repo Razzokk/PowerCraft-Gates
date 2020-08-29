@@ -5,8 +5,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 public class BlockLatch extends BlockGateBase
 {
@@ -40,10 +40,24 @@ public class BlockLatch extends BlockGateBase
 
 		switch (type)
 		{
-			case RS: if (right) return false; if (left) return true; break;
-			case SR: if (left) return true; if (right) return false; break;
+			case RS:
+				if (right) return false;
+				if (left) return true;
+				break;
+			case SR:
+				if (left) return true;
+				if (right) return false;
+				break;
 		}
 		return state.get(POWERED);
+	}
+
+	public enum Type
+	{
+		RS,
+		SR,
+		D,
+		TOGGLE
 	}
 
 	public static class Edge extends BlockGateEdgeBase
@@ -74,8 +88,12 @@ public class BlockLatch extends BlockGateBase
 		{
 			switch (type)
 			{
-				case D: if (side == state.get(HORIZONTAL_FACING).rotateY()) scheduleTickIfNotScheduled(world, pos, 2); break;
-				case TOGGLE: if (!isPowered(world, pos, side.getOpposite())) scheduleTickIfNotScheduled(world, pos, 2); break;
+				case D:
+					if (side == state.get(HORIZONTAL_FACING).rotateY()) scheduleTickIfNotScheduled(world, pos, 2);
+					break;
+				case TOGGLE:
+					if (!isPowered(world, pos, side.getOpposite())) scheduleTickIfNotScheduled(world, pos, 2);
+					break;
 			}
 		}
 
@@ -84,18 +102,12 @@ public class BlockLatch extends BlockGateBase
 		{
 			switch (type)
 			{
-				case D: return isPowered(world, pos, state.get(HORIZONTAL_FACING).rotateYCCW());
-				case TOGGLE: return !state.get(POWERED);
+				case D:
+					return isPowered(world, pos, state.get(HORIZONTAL_FACING).rotateYCCW());
+				case TOGGLE:
+					return !state.get(POWERED);
 			}
 			return state.get(POWERED);
 		}
-	}
-
-	public enum Type
-	{
-		RS,
-		SR,
-		D,
-		TOGGLE
 	}
 }

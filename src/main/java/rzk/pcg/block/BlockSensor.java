@@ -1,19 +1,16 @@
 package rzk.pcg.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
-import net.minecraft.util.concurrent.ITaskQueue;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import rzk.lib.mc.util.DirectionUtils;
+import rzk.lib.mc.util.Utils;
 
 import java.util.Random;
 
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
-import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 public class BlockSensor extends BlockGateBase
 {
@@ -109,7 +106,7 @@ public class BlockSensor extends BlockGateBase
 		{
 			if (!world.isRemote())
 			{
-				Direction side = DirectionUtils.getFromBlockPos(pos, neighbor);
+				Direction side = Utils.getFromBlockPos(pos, neighbor);
 				if (side == state.get(HORIZONTAL_FACING).getOpposite() && pos.getY() == neighbor.getY() && world instanceof World)
 					scheduleTickIfNotScheduled((World) world, pos, 2);
 			}
@@ -142,7 +139,7 @@ public class BlockSensor extends BlockGateBase
 		{
 			if (type == Type.RISING_EDGE)
 			{
-				world.setBlockState(pos, state.with(POWERED, true));
+				setPoweredState(state, world, pos, true);
 				scheduleTickIfNotScheduled(world, pos, 2);
 			}
 		}
@@ -152,7 +149,7 @@ public class BlockSensor extends BlockGateBase
 		{
 			if (type == Type.FALLING_EDGE)
 			{
-				world.setBlockState(pos, state.with(POWERED, true));
+				setPoweredState(state, world, pos, true);
 				scheduleTickIfNotScheduled(world, pos, 2);
 			}
 		}
