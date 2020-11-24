@@ -1,10 +1,9 @@
 package rzk.pcg.datagen;
 
-import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import rzk.pcg.registry.ModBlocks;
 import rzk.pcg.registry.ModItems;
 
@@ -23,8 +22,8 @@ public class ItemModels extends ItemModelProvider
 	@Override
 	protected void registerModels()
 	{
-		ModBlocks.BLOCKS.forEach(this::gate);
-		simpleItem(ModItems.BASE_PLATE);
+		ModBlocks.ITEMS.getEntries().forEach(gate -> gate(gate.get()));
+		simpleItem(ModItems.BASE_PLATE.get());
 	}
 
 	public void simpleItem(Item item)
@@ -33,9 +32,8 @@ public class ItemModels extends ItemModelProvider
 		singleTexture(itemName, mcLoc("item/generated"), "layer0", modLoc("items/" + itemName));
 	}
 
-	public void gate(Block block)
+	public void gate(Item item)
 	{
-		Item item = block.asItem();
 		withExistingParent(name(item), modLoc("block/" + name(item) + "_off"));
 	}
 

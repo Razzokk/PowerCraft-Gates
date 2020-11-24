@@ -1,7 +1,7 @@
 package rzk.pcg.datagen;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
@@ -20,8 +20,8 @@ public class DataGenerators
 
 		if (event.includeClient())
 		{
-			generator.addProvider(new BlockModels(generator, PCGates.MODID, fileHelper));
-			generator.addProvider(new ItemModels(generator, PCGates.MODID, fileHelper));
+			generator.addProvider(new BlockModels(generator, PCGates.MOD_ID, fileHelper));
+			generator.addProvider(new ItemModels(generator, PCGates.MOD_ID, fileHelper));
 		}
 
 		if (event.includeServer())

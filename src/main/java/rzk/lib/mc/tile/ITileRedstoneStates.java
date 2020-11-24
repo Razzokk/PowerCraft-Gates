@@ -1,5 +1,6 @@
 package rzk.lib.mc.tile;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 
 public interface ITileRedstoneStates
@@ -21,5 +22,16 @@ public interface ITileRedstoneStates
 		else
 			states &= ~(1 << side.getIndex());
 		return setRedstoneStates(states);
+	}
+
+	default void readStates(CompoundNBT compound)
+	{
+		setRedstoneStates(compound.getByte("redstone_states"));
+	}
+
+	default CompoundNBT writeStates(CompoundNBT compound)
+	{
+		compound.putByte("redstone_states", getRedstoneStates());
+		return compound;
 	}
 }

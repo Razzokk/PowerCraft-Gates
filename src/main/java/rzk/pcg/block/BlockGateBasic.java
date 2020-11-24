@@ -83,7 +83,7 @@ public class BlockGateBasic extends BlockGateBase
 			case AND_2:
 				return left && right;
 			case AND_3:
-				return left && back || right;
+				return left && back && right;
 			case NAND_2:
 				return !(left && right);
 			case NAND_3:

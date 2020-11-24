@@ -10,12 +10,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import rzk.lib.mc.util.Utils;
-import rzk.pcg.PCGates;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+import rzk.lib.mc.util.WorldUtils;
+import rzk.pcg.gui.GuiCounter;
 import rzk.pcg.tile.TileCounter;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
@@ -23,12 +24,12 @@ public class BlockCounter extends BlockGateEdgeBase
 {
 	protected void reset(World world, BlockPos pos)
 	{
-		Utils.getTileAndDo(world, pos, TileCounter.class, TileCounter::reset);
+		WorldUtils.ifTilePresent(world, pos, TileCounter.class, TileCounter::reset);
 	}
 
 	protected void count(World world, BlockPos pos, int amount)
 	{
-		Utils.getTileAndDo(world, pos, TileCounter.class, tile -> tile.count(amount));
+		WorldUtils.ifTilePresent(world, pos, TileCounter.class, tile -> tile.count(amount));
 	}
 
 	@Override
@@ -46,13 +47,9 @@ public class BlockCounter extends BlockGateEdgeBase
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
 	{
-		Optional<TileCounter> tile = Utils.getTile(world, pos, TileCounter.class);
-		if (world.isRemote && tile.isPresent())
-		{
-			PCGates.proxy.openCounterGui(tile.get().getMaxCount(), pos);
-			return ActionResultType.SUCCESS;
-		}
-		return ActionResultType.PASS;
+		if (world.isRemote)
+			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> GuiCounter.openGui(pos));
+		return ActionResultType.SUCCESS;
 	}
 
 	@Override

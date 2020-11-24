@@ -2,10 +2,11 @@ package rzk.pcg.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
@@ -17,22 +18,21 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import rzk.lib.mc.block.BlockRedstoneDeviceEdgeDetection;
-import rzk.pcg.PCGates;
+import rzk.lib.mc.block.BlockRedstoneDeviceEdge;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
-public abstract class BlockGateEdgeBase extends BlockRedstoneDeviceEdgeDetection
+public abstract class BlockGateEdgeBase extends BlockRedstoneDeviceEdge
 {
-	public static final VoxelShape GATE_SHAPE = Block.makeCuboidShape(0, 0, 0, 16, 3, 16);
-
 	public BlockGateEdgeBase()
 	{
-		super(Properties.create(Material.ROCK));
+		super(Properties.create(Material.ROCK).hardnessAndResistance(0.5f).sound(SoundType.STONE));
 		setDefaultState(getDefaultState().with(HORIZONTAL_FACING, Direction.NORTH));
 	}
 
@@ -62,7 +62,13 @@ public abstract class BlockGateEdgeBase extends BlockRedstoneDeviceEdgeDetection
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
 	{
-		return GATE_SHAPE;
+		return BlockGateBase.GATE_SHAPE;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
+	{
+		return Collections.singletonList(new ItemStack(this));
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -76,11 +82,5 @@ public abstract class BlockGateEdgeBase extends BlockRedstoneDeviceEdgeDetection
 
 			world.addParticle(RedstoneParticleData.REDSTONE_DUST, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 		}
-	}
-
-	@Override
-	public BlockItem createItem()
-	{
-		return new BlockItem(this, new Item.Properties().group(PCGates.ITEM_GROUP_PC_GATES));
 	}
 }

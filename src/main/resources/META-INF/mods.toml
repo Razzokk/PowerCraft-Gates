@@ -1,7 +1,6 @@
 modLoader = "javafml"
-loaderVersion = "[31,)"
-
-license="GNU Genereal Public License v3"
+loaderVersion = "[32,)"
+license="GNU GPL v3"
 
 [[mods]]
 modId = "pcg"
@@ -14,13 +13,13 @@ description = '''PowerCraft Gates is a Mod that brings back the old Gates from P
 [[dependencies.pcg]]
 modId = "forge"
 mandatory = true
-versionRange = "[31,)"
+versionRange = "[32,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.pcg]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.16.2]"
+versionRange = "[1.16,)"
 ordering = "NONE"
 side = "BOTH"

@@ -1,13 +1,12 @@
 package rzk.pcg.packet;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkEvent;
 import rzk.lib.mc.packet.Packet;
-import rzk.lib.mc.util.Utils;
+import rzk.lib.mc.util.WorldUtils;
 import rzk.pcg.tile.TileTimer;
 
 import java.util.function.Supplier;
@@ -45,15 +44,7 @@ public class PacketTimer extends Packet
 			ServerPlayerEntity player = ctx.get().getSender();
 			ServerWorld world;
 			if (player != null && (world = player.getServerWorld()).isBlockLoaded(pos))
-			{
-				Utils.getTile(world, pos, TileTimer.class).ifPresent(tile ->
-				{
-					tile.setDelay(delay);
-					BlockState state = world.getBlockState(pos);
-					world.notifyBlockUpdate(pos, state, state, 3);
-				});
-			}
-
+				WorldUtils.ifTilePresent(world, pos, TileTimer.class, tile -> tile.setDelay(delay));
 		});
 		ctx.get().setPacketHandled(true);
 	}

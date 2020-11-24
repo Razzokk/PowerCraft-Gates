@@ -12,12 +12,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import rzk.lib.mc.util.Utils;
-import rzk.pcg.PCGates;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+import rzk.lib.mc.util.WorldUtils;
+import rzk.pcg.gui.GuiTimer;
 import rzk.pcg.tile.TileTimer;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
@@ -45,7 +46,7 @@ public class BlockTimer extends BlockGateEdgeBase
 	protected void setEnabled(World world, BlockPos pos, boolean enabled)
 	{
 		if (!world.isRemote)
-			Utils.getTile(world, pos, TileTimer.class).ifPresent(tile -> tile.setEnabled(enabled));
+			WorldUtils.ifTilePresent(world, pos, TileTimer.class, tile -> tile.setEnabled(enabled));
 	}
 
 	@Override
@@ -69,13 +70,9 @@ public class BlockTimer extends BlockGateEdgeBase
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
 	{
-		Optional<TileTimer> tile = Utils.getTile(world, pos, TileTimer.class);
-		if (world.isRemote && tile.isPresent())
-		{
-			PCGates.proxy.openTimerGui(tile.get().getDelay(), pos);
-			return ActionResultType.SUCCESS;
-		}
-		return ActionResultType.PASS;
+		if (world.isRemote)
+			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> GuiTimer.openGui(pos));
+		return ActionResultType.SUCCESS;
 	}
 
 	@Override
