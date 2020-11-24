@@ -22,24 +22,13 @@ public class PCGates
 {
 	public static final String MOD_ID = "pcg";
 
-	public static Comparator<ItemStack> comparator;
-
 	public static final ItemGroup ITEM_GROUP_PC_GATES = new ItemGroup(MOD_ID)
 	{
-
 		@Override
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack createIcon()
 		{
 			return new ItemStack(ModBlocks.GATE_AND_3.get());
-		}
-
-		@Override
-		@OnlyIn(Dist.CLIENT)
-		public void fill(NonNullList<ItemStack> items)
-		{
-			super.fill(items);
-			items.sort(comparator);
 		}
 	};
 

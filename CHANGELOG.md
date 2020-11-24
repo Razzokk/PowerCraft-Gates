@@ -1,3 +1,7 @@
+### Version 1.16.3-1.1.3:
+
+- BUGFIX: Crash when showing creative tab
+
 ### Version 1.16.3-1.1.2:
 
 - BUGFIX: Blocks not dropped when harvested
