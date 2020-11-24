@@ -27,7 +27,7 @@ public class BlockModels extends BlockStateProvider
 	@Override
 	protected void registerStatesAndModels()
 	{
-		ModBlocks.BLOCKS.forEach(this::gate);
+		ModBlocks.BLOCKS.getEntries().forEach(gate -> gate(gate.get()));
 	}
 
 	public void gate(Block block)

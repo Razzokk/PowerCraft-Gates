@@ -20,8 +20,8 @@ public class DataGenerators
 
 		if (event.includeClient())
 		{
-			generator.addProvider(new BlockModels(generator, PCGates.MODID, fileHelper));
-			generator.addProvider(new ItemModels(generator, PCGates.MODID, fileHelper));
+			generator.addProvider(new BlockModels(generator, PCGates.MOD_ID, fileHelper));
+			generator.addProvider(new ItemModels(generator, PCGates.MOD_ID, fileHelper));
 		}
 
 		if (event.includeServer())

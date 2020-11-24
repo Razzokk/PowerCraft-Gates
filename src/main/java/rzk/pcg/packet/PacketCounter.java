@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkEvent;
 import rzk.lib.mc.packet.Packet;
-import rzk.lib.mc.util.Utils;
+import rzk.lib.mc.util.WorldUtils;
 import rzk.pcg.tile.TileCounter;
 
 import java.util.function.Supplier;
@@ -44,8 +44,7 @@ public class PacketCounter extends Packet
 			ServerPlayerEntity player = ctx.get().getSender();
 			ServerWorld world;
 			if (player != null && (world = player.getServerWorld()).isBlockLoaded(pos))
-				Utils.getTile(world, pos, TileCounter.class).ifPresent(tile -> tile.setMaxCount(maxCount));
-
+				WorldUtils.ifTilePresent(world, pos, TileCounter.class, tile -> tile.setMaxCount(maxCount));
 		});
 		ctx.get().setPacketHandled(true);
 	}

@@ -13,7 +13,7 @@ public class PacketHandler
 {
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-			new ResourceLocation(PCGates.MODID, "main"),
+			new ResourceLocation(PCGates.MOD_ID, "main_channel"),
 			() -> PROTOCOL_VERSION,
 			PROTOCOL_VERSION::equals,
 			PROTOCOL_VERSION::equals

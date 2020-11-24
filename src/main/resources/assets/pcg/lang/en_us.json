@@ -36,7 +36,9 @@
   "item.pcg.base_plate": "Base Plate",
 
   "gui.pcg.timer": "Timer",
+  "gui.pcg.timer.delay": "Delay",
   "gui.pcg.counter": "Counter",
+  "gui.pcg.counter.max_count": "Max Count",
 
   "itemGroup.pcg": "PowerCraft Gates"
 }

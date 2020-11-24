@@ -1,51 +1,49 @@
 package rzk.pcg.tile;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntityType;
 import rzk.lib.mc.tile.TileRedstoneDevice;
-import rzk.lib.util.MathUtils;
-import rzk.lib.util.ObjectUtils;
+import rzk.lib.mc.util.ObjectUtils;
+import rzk.lib.mc.util.Utils;
 import rzk.pcg.block.BlockCounter;
-import rzk.pcg.registry.ModBlocks;
+import rzk.pcg.registry.ModTiles;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 public class TileCounter extends TileRedstoneDevice
 {
-	public static final TileEntityType<TileCounter> TYPE = TileEntityType.Builder.create(TileCounter::new, ModBlocks.COUNTER).build(null);
-
 	private int maxCount;
 	private int counter;
 
 	public TileCounter()
 	{
-		super(TYPE);
+		super(ModTiles.COUNTER.get());
 		maxCount = 10;
 		counter = 0;
 	}
 
 	public void reset()
 	{
-		counter = 0;
-		count(0);
+		count(-counter);
 		markDirty();
 	}
 
 	public void count(int amount)
 	{
-		counter = MathUtils.constrain(counter + amount, 0, maxCount);
-		Optional<BlockCounter> blockCounter = ObjectUtils.cast(getBlockState().getBlock(), BlockCounter.class);
-		if (counter >= maxCount && !getBlockState().get(BlockStateProperties.POWERED))
-			blockCounter.ifPresent(block -> block.setPoweredState(getBlockState(), world, pos, true));
-		else if (counter < maxCount && getBlockState().get(BlockStateProperties.POWERED))
-			blockCounter.ifPresent(block -> block.setPoweredState(getBlockState(), world, pos, false));
-		else
-			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
-		markDirty();
+		counter = Utils.constrain(counter + amount, 0, maxCount);
+		ObjectUtils.ifCastable(getBlockState().getBlock(), BlockCounter.class, blockCounter ->
+		{
+			if (counter >= maxCount && !getBlockState().get(BlockStateProperties.POWERED))
+				blockCounter.setPoweredState(getBlockState(), world, pos, true);
+			else if (counter < maxCount && getBlockState().get(BlockStateProperties.POWERED))
+				blockCounter.setPoweredState(getBlockState(), world, pos, false);
+			else
+				world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+			markDirty();
+		});
 	}
 
 	public int getCounter()

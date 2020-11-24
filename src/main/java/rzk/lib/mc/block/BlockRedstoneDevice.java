@@ -17,7 +17,7 @@ import java.util.EnumSet;
 
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
-public abstract class BlockRedstoneDevice extends BlockBase
+public abstract class BlockRedstoneDevice extends Block
 {
 	public BlockRedstoneDevice(Properties properties)
 	{
@@ -42,6 +42,12 @@ public abstract class BlockRedstoneDevice extends BlockBase
 			return isInputSide(state, side.getOpposite()) || isOutputSide(state, side.getOpposite());
 
 		return false;
+	}
+
+	@Override
+	public boolean canProvidePower(BlockState state)
+	{
+		return true;
 	}
 
 	protected int getInputPower(World world, BlockPos pos, Direction side)
@@ -97,7 +103,7 @@ public abstract class BlockRedstoneDevice extends BlockBase
 	public void setPoweredState(BlockState state, World world, BlockPos pos, boolean powered)
 	{
 		world.setBlockState(pos, state.with(POWERED, powered));
-		for (Direction side : Direction.Plane.HORIZONTAL)
+		for (Direction side : Direction.values())
 			if (isOutputSide(state, side))
 				updateNeighborsInFront(state, world, pos, side);
 	}

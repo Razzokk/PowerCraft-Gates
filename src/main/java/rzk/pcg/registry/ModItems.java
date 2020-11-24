@@ -1,30 +1,19 @@
 package rzk.pcg.registry;
 
 import net.minecraft.item.Item;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import rzk.lib.mc.registry.ModRegistry;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import rzk.pcg.PCGates;
-import rzk.pcg.item.ItemUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class ModItems
 {
-	public static final List<Item> ITEMS = new ArrayList<>();
+	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, PCGates.MOD_ID);
 
-	// Util
-	public static final Item BASE_PLATE = registerItem(new ItemUtil(), "base_plate");
+	public static final RegistryObject<Item> BASE_PLATE = ITEMS.register("base_plate", () -> new Item(defaultItemProperties()));
 
-	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event)
+	public static Item.Properties defaultItemProperties()
 	{
-		ITEMS.forEach(event.getRegistry()::register);
-	}
-
-	public static Item registerItem(Item item, String name)
-	{
-		return ModRegistry.registerItem(ITEMS, PCGates.MODID, item, name);
+		return new Item.Properties().group(PCGates.ITEM_GROUP_PC_GATES);
 	}
 }

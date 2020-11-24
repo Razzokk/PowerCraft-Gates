@@ -1,33 +1,20 @@
 package rzk.pcg.registry;
 
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import rzk.lib.mc.registry.ModRegistry;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import rzk.lib.mc.tile.TileRedstoneDevice;
+import rzk.lib.mc.tile.TileType;
 import rzk.pcg.PCGates;
 import rzk.pcg.tile.TileCounter;
 import rzk.pcg.tile.TileTimer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class ModTiles
 {
-	public static final List<TileEntityType<?>> TILES = new ArrayList<>();
+	public static final DeferredRegister<TileEntityType<?>> TILES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, PCGates.MOD_ID);
 
-	@SubscribeEvent
-	public static void registerTiles(RegistryEvent.Register<TileEntityType<?>> event)
-	{
-		registerTile(TileRedstoneDevice.TYPE, "tile_redstone_device");
-		registerTile(TileTimer.TYPE, "tile_timer");
-		registerTile(TileCounter.TYPE, "tile_counter");
-
-		TILES.forEach(event.getRegistry()::register);
-	}
-
-	public static TileEntityType<?> registerTile(TileEntityType<?> tile, String name)
-	{
-		return ModRegistry.registerTile(TILES, PCGates.MODID, tile, name);
-	}
+	public static final RegistryObject<TileEntityType<TileRedstoneDevice>> REDSTONE_DEVICE = TILES.register("tile_redstone_device", () -> new TileType<>(TileRedstoneDevice::new));
+	public static final RegistryObject<TileEntityType<TileTimer>> TIMER = TILES.register("tile_timer", () -> new TileType<>(TileTimer::new));
+	public static final RegistryObject<TileEntityType<TileCounter>> COUNTER = TILES.register("tile_counter", () -> new TileType<>(TileCounter::new));
 }

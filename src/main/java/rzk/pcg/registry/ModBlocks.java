@@ -1,70 +1,79 @@
 package rzk.pcg.registry;
 
 import net.minecraft.block.Block;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import rzk.lib.mc.registry.ModRegistry;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import rzk.pcg.PCGates;
 import rzk.pcg.block.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class ModBlocks
 {
-	public static final List<Block> BLOCKS = new ArrayList<>();
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, PCGates.MOD_ID);
+	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, PCGates.MOD_ID);
 
 	// Basic
-	public static final Block GATE_BUFFER = registerBlock(new BlockGateBasic(BlockGateBasic.Type.BUFFER), "gate_buffer");
-	public static final Block GATE_BUFFER_ALL = registerBlock(new BlockGateBasic(BlockGateBasic.Type.BUFFER_ALL), "gate_buffer_all");
-	public static final Block GATE_NOT = registerBlock(new BlockGateBasic(BlockGateBasic.Type.NOT), "gate_not");
-	public static final Block GATE_NOT_ALL = registerBlock(new BlockGateBasic(BlockGateBasic.Type.NOT_ALL), "gate_not_all");
-	public static final Block GATE_OR_2 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.OR_2), "gate_or_2");
-	public static final Block GATE_OR_3 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.OR_3), "gate_or_3");
-	public static final Block GATE_NOR_2 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.NOR_2), "gate_nor_2");
-	public static final Block GATE_NOR_3 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.NOR_3), "gate_nor_3");
-	public static final Block GATE_AND_2 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.AND_2), "gate_and_2");
-	public static final Block GATE_AND_3 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.AND_3), "gate_and_3");
-	public static final Block GATE_NAND_2 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.NAND_2), "gate_nand_2");
-	public static final Block GATE_NAND_3 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.NAND_3), "gate_nand_3");
-	public static final Block GATE_XOR_2 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.XOR_2), "gate_xor_2");
-	public static final Block GATE_XOR_3 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.XOR_3), "gate_xor_3");
-	public static final Block GATE_XNOR_2 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.XNOR_2), "gate_xnor_2");
-	public static final Block GATE_XNOR_3 = registerBlock(new BlockGateBasic(BlockGateBasic.Type.XNOR_3), "gate_xnor_3");
+	public static final RegistryObject<Block> GATE_BUFFER = registerBlock("gate_buffer", () -> new BlockGateBasic(BlockGateBasic.Type.BUFFER));
+	public static final RegistryObject<Block> GATE_BUFFER_ALL = registerBlock("gate_buffer_all", () -> new BlockGateBasic(BlockGateBasic.Type.BUFFER_ALL));
+	public static final RegistryObject<Block> GATE_NOT = registerBlock("gate_not", () -> new BlockGateBasic(BlockGateBasic.Type.NOT));
+	public static final RegistryObject<Block> GATE_NOT_ALL = registerBlock("gate_not_all", () -> new BlockGateBasic(BlockGateBasic.Type.NOT_ALL));
+	public static final RegistryObject<Block> GATE_OR_2 = registerBlock("gate_or_2", () -> new BlockGateBasic(BlockGateBasic.Type.OR_2));
+	public static final RegistryObject<Block> GATE_OR_3 = registerBlock("gate_or_3", () -> new BlockGateBasic(BlockGateBasic.Type.OR_3));
+	public static final RegistryObject<Block> GATE_NOR_2 = registerBlock("gate_nor_2", () -> new BlockGateBasic(BlockGateBasic.Type.NOR_2));
+	public static final RegistryObject<Block> GATE_NOR_3 = registerBlock("gate_nor_3", () -> new BlockGateBasic(BlockGateBasic.Type.NOR_3));
+	public static final RegistryObject<Block> GATE_AND_2 = registerBlock("gate_and_2", () -> new BlockGateBasic(BlockGateBasic.Type.AND_2));
+	public static final RegistryObject<Block> GATE_AND_3 = registerBlock("gate_and_3", () -> new BlockGateBasic(BlockGateBasic.Type.AND_3));
+	public static final RegistryObject<Block> GATE_NAND_2 = registerBlock("gate_nand_2", () -> new BlockGateBasic(BlockGateBasic.Type.NAND_2));
+	public static final RegistryObject<Block> GATE_NAND_3 = registerBlock("gate_nand_3", () -> new BlockGateBasic(BlockGateBasic.Type.NAND_3));
+	public static final RegistryObject<Block> GATE_XOR_2 = registerBlock("gate_xor_2", () -> new BlockGateBasic(BlockGateBasic.Type.XOR_2));
+	public static final RegistryObject<Block> GATE_XOR_3 = registerBlock("gate_xor_3", () -> new BlockGateBasic(BlockGateBasic.Type.XOR_3));
+	public static final RegistryObject<Block> GATE_XNOR_2 = registerBlock("gate_xnor_2", () -> new BlockGateBasic(BlockGateBasic.Type.XNOR_2));
+	public static final RegistryObject<Block> GATE_XNOR_3 = registerBlock("gate_xnor_3", () -> new BlockGateBasic(BlockGateBasic.Type.XNOR_3));
 
 	// Sensor
-	public static final Block SENSOR_DAY = registerBlock(new BlockSensor(BlockSensor.Type.DAY), "sensor_day");
-	public static final Block SENSOR_NIGHT = registerBlock(new BlockSensor(BlockSensor.Type.NIGHT), "sensor_night");
-	public static final Block SENSOR_RAIN = registerBlock(new BlockSensor(BlockSensor.Type.RAIN), "sensor_rain");
-	public static final Block SENSOR_THUNDER = registerBlock(new BlockSensor(BlockSensor.Type.THUNDER), "sensor_thunder");
-	public static final Block SENSOR_CHEST_EMPTY = registerBlock(new BlockSensor.Chest(BlockSensor.Type.CHEST_EMPTY), "sensor_chest_empty");
-	public static final Block SENSOR_CHEST_SPACE = registerBlock(new BlockSensor.Chest(BlockSensor.Type.CHEST_SPACE), "sensor_chest_space");
-	public static final Block SENSOR_CHEST_FULL = registerBlock(new BlockSensor.Chest(BlockSensor.Type.CHEST_FULL), "sensor_chest_full");
-	public static final Block SENSOR_RISING_EDGE = registerBlock(new BlockSensor.Edge(BlockSensor.Type.RISING_EDGE), "sensor_rising_edge");
-	public static final Block SENSOR_FALLING_EDGE = registerBlock(new BlockSensor.Edge(BlockSensor.Type.FALLING_EDGE), "sensor_falling_edge");
+	public static final RegistryObject<Block> SENSOR_DAY = registerBlock("sensor_day", () -> new BlockSensor(BlockSensor.Type.DAY));
+	public static final RegistryObject<Block> SENSOR_NIGHT = registerBlock("sensor_night", () -> new BlockSensor(BlockSensor.Type.NIGHT));
+	public static final RegistryObject<Block> SENSOR_RAIN = registerBlock("sensor_rain", () -> new BlockSensor(BlockSensor.Type.RAIN));
+	public static final RegistryObject<Block> SENSOR_THUNDER = registerBlock("sensor_thunder", () -> new BlockSensor(BlockSensor.Type.THUNDER));
+	public static final RegistryObject<Block> SENSOR_CHEST_EMPTY = registerBlock("sensor_chest_empty", () -> new BlockSensor.Chest(BlockSensor.Type.CHEST_EMPTY));
+	public static final RegistryObject<Block> SENSOR_CHEST_SPACE = registerBlock("sensor_chest_space", () -> new BlockSensor.Chest(BlockSensor.Type.CHEST_SPACE));
+	public static final RegistryObject<Block> SENSOR_CHEST_FULL = registerBlock("sensor_chest_full", () -> new BlockSensor.Chest(BlockSensor.Type.CHEST_FULL));
+	public static final RegistryObject<Block> SENSOR_RISING_EDGE = registerBlock("sensor_rising_edge", () -> new BlockSensor.Edge(BlockSensor.Type.RISING_EDGE));
+	public static final RegistryObject<Block> SENSOR_FALLING_EDGE = registerBlock("sensor_falling_edge", () -> new BlockSensor.Edge(BlockSensor.Type.FALLING_EDGE));
 
 	// Latch
-	public static final Block LATCH_RS = registerBlock(new BlockLatch(BlockLatch.Type.RS), "latch_rs");
-	public static final Block LATCH_SR = registerBlock(new BlockLatch(BlockLatch.Type.SR), "latch_sr");
-	public static final Block LATCH_D = registerBlock(new BlockLatch.Edge(BlockLatch.Type.D), "latch_d");
-	public static final Block LATCH_TOGGLE = registerBlock(new BlockLatch.Edge(BlockLatch.Type.TOGGLE), "latch_toggle");
+	public static final RegistryObject<Block> LATCH_RS = registerBlock("latch_rs", () -> new BlockLatch(BlockLatch.Type.RS));
+	public static final RegistryObject<Block> LATCH_SR = registerBlock("latch_sr", () -> new BlockLatch(BlockLatch.Type.SR));
+	public static final RegistryObject<Block> LATCH_D = registerBlock("latch_d", () -> new BlockLatch.Edge(BlockLatch.Type.D));
+	public static final RegistryObject<Block> LATCH_TOGGLE = registerBlock("latch_toggle", () -> new BlockLatch.Edge(BlockLatch.Type.TOGGLE));
 
 	// Timer
-	public static final Block TIMER = registerBlock(new BlockTimer(), "timer");
-	public static final Block TIMER_ON_DELAY = registerBlock(new BlockTimer.Delay(BlockTimer.Delay.Type.ON), "timer_on_delay");
-	public static final Block TIMER_OFF_DELAY = registerBlock(new BlockTimer.Delay(BlockTimer.Delay.Type.OFF), "timer_off_delay");
+	public static final RegistryObject<Block> TIMER = registerBlock("timer", BlockTimer::new);
+	public static final RegistryObject<Block> TIMER_ON_DELAY = registerBlock("timer_on_delay", () -> new BlockTimer.Delay(BlockTimer.Delay.Type.ON));
+	public static final RegistryObject<Block> TIMER_OFF_DELAY = registerBlock("timer_off_delay", () -> new BlockTimer.Delay(BlockTimer.Delay.Type.OFF));
 
 	// Counter
-	public static final Block COUNTER = registerBlock(new BlockCounter(), "counter");
+	public static final RegistryObject<Block> COUNTER = registerBlock("counter", BlockCounter::new);
 
-	@SubscribeEvent
-	public static void registerBlocks(RegistryEvent.Register<Block> event)
+	public static RegistryObject<Block> registerBlock(String name, Supplier<Block> blockSupplier, Function<Block, BlockItem> itemProvider)
 	{
-		BLOCKS.forEach(event.getRegistry()::register);
+		RegistryObject<Block> block = BLOCKS.register(name, blockSupplier);
+		ITEMS.register(name, () -> itemProvider.apply(block.get()));
+		return block;
 	}
 
-	public static Block registerBlock(Block block, String name)
+	public static RegistryObject<Block> registerBlock(String name, Supplier<Block> blockSupplier)
 	{
-		return ModRegistry.registerBlock(BLOCKS, ModItems.ITEMS, PCGates.MODID, block, name);
+		return registerBlock(name, blockSupplier, block -> new BlockItem(block, ModItems.defaultItemProperties()));
+	}
+
+	public static RegistryObject<Block> registerBlockNoItem(String name, Supplier<Block> blockSupplier)
+	{
+		return BLOCKS.register(name, blockSupplier);
 	}
 }

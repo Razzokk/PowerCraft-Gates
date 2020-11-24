@@ -3,16 +3,15 @@ package rzk.lib.mc.tile;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import rzk.pcg.registry.ModTiles;
 
 public class TileRedstoneDevice extends TileEntity implements ITileRedstoneStates
 {
-	public static final TileEntityType<TileRedstoneDevice> TYPE = TileEntityType.Builder.create(TileRedstoneDevice::new).build(null);
-
 	private byte states;
 
 	public TileRedstoneDevice()
 	{
-		super(TYPE);
+		super(ModTiles.REDSTONE_DEVICE.get());
 	}
 
 	public TileRedstoneDevice(TileEntityType<?> tileEntityType)

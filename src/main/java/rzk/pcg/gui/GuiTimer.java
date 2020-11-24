@@ -1,35 +1,48 @@
 package rzk.pcg.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
+import org.lwjgl.glfw.GLFW;
+import rzk.lib.mc.gui.widgets.SizedButton;
+import rzk.lib.mc.util.Utils;
+import rzk.lib.mc.util.WorldUtils;
 import rzk.pcg.PCGates;
 import rzk.pcg.packet.PacketHandler;
 import rzk.pcg.packet.PacketTimer;
+import rzk.pcg.tile.TileTimer;
 
-@OnlyIn(Dist.CLIENT)
 public class GuiTimer extends Screen
 {
-	public static final ResourceLocation GUI_TEXTURE = new ResourceLocation(PCGates.MODID, "textures/gui/timer.png");
+	public static final ResourceLocation GUI_TEXTURE = new ResourceLocation(PCGates.MOD_ID, "textures/gui/timer.png");
 	int guiLeft;
 	int guiTop;
-	private TextFieldWidget delayField;
-	private int delay;
-	private BlockPos pos;
 	private int xSize;
 	private int ySize;
 
-	public GuiTimer(int delay, BlockPos pos)
+	private TextFieldWidget delayField;
+	private Button done;
+	private Button buttonSubtract_1;
+	private Button buttonSubtract_10;
+	private Button buttonAdd_1;
+	private Button buttonAdd_10;
+
+	private int delay;
+	private BlockPos pos;
+
+	public GuiTimer(BlockPos pos)
 	{
 		super(new TranslationTextComponent("gui.pcg.timer"));
-		this.delay = delay;
+		delay = WorldUtils.mapTile(Minecraft.getInstance().world, pos, TileTimer.class, TileTimer::getDelay);
 		this.pos = pos;
 	}
 
@@ -40,7 +53,14 @@ public class GuiTimer extends Screen
 		ySize = 80;
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
-		delayField = new TextFieldWidget(font, width / 2 - 40, guiTop + 20, 48, 16, I18n.format("gui.pcg.timer.delay"))
+
+		addButton(buttonSubtract_1 = new SizedButton(guiLeft + 6, guiTop + 16, 36, 16, "-1", this::buttonPressed));
+		addButton(buttonSubtract_10 = new SizedButton(guiLeft + 6, guiTop + 36, 36, 16, "-10", this::buttonPressed));
+		addButton(buttonAdd_1 = new SizedButton(guiLeft + 86, guiTop + 16, 36, 16, "+1", this::buttonPressed));
+		addButton(buttonAdd_10 = new SizedButton(guiLeft + 86, guiTop + 36, 36, 16, "+10", this::buttonPressed));
+		addButton(done = new SizedButton(guiLeft + 48, guiTop + 56, 32, 18, I18n.format("gui.done"), onPress -> sendDelayPacket()));
+
+		delayField = new TextFieldWidget(font, guiLeft + 45, guiTop + 20, 38, 16, I18n.format("gui.pcg.timer.delay"))
 		{
 			@Override
 			public void writeText(String textToWrite)
@@ -54,21 +74,61 @@ public class GuiTimer extends Screen
 				super.writeText(stringbuilder.toString());
 			}
 		};
-		delayField.setCanLoseFocus(false);
-		delayField.changeFocus(true);
-		delayField.setMaxStringLength(35);
-		delayField.setText("" + delay);
+
+		delayField.setMaxStringLength(5);
+		delayField.setText(String.valueOf(delay));
+		delayField.setResponder(text ->
+		{
+			boolean textValid = text != null && !text.isEmpty();
+			done.active = textValid;
+			setDelay(textValid ?  Integer.parseInt(text) : 0);
+		});
 		children.add(delayField);
-		setFocusedDefault(delayField);
-		addButton(new Button(width / 2 - 24, guiTop + ySize - 28, 48, 20, I18n.format("gui.done"), onPress -> sendDelayPacket()));
 	}
 
-	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_)
+	private void setDelay(int delay)
 	{
-		if (p_keyPressed_1_ == 256)
-			this.minecraft.player.closeScreen();
+		this.delay = Utils.constrain(delay, 2, 99999);
+	}
 
-		return delayField.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_) || delayField.canWrite() || super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
+	private void buttonPressed(Button button)
+	{
+		setDelay(delay +  Integer.parseInt(button.getMessage()));
+		delayField.setText(String.valueOf(delay));
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+	{
+		switch (keyCode)
+		{
+			case GLFW.GLFW_KEY_LEFT_SHIFT:
+			case GLFW.GLFW_KEY_RIGHT_SHIFT:
+				buttonSubtract_1.setMessage("-100");
+				buttonSubtract_10.setMessage("-1000");
+				buttonAdd_1.setMessage("+100");
+				buttonAdd_10.setMessage("+1000");
+				break;
+		}
+
+		return delayField.keyPressed(keyCode, scanCode, modifiers) || delayField.canWrite() || super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean keyReleased(int keyCode, int scanCode, int modifiers)
+	{
+		switch (keyCode)
+		{
+			case GLFW.GLFW_KEY_LEFT_SHIFT:
+			case GLFW.GLFW_KEY_RIGHT_SHIFT:
+				buttonSubtract_1.setMessage("-1");
+				buttonSubtract_10.setMessage("-10");
+				buttonAdd_1.setMessage("+1");
+				buttonAdd_10.setMessage("+10");
+				break;
+		}
+
+		return super.keyReleased(keyCode, scanCode, modifiers);
 	}
 
 	@Override
@@ -77,21 +137,26 @@ public class GuiTimer extends Screen
 		renderBackground();
 		drawGuiBackgroundTexture(mouseX, mouseY, partialTicks);
 		delayField.render(mouseX, mouseY, partialTicks);
-		font.drawString(title.getFormattedText(), guiLeft + (xSize - font.getStringWidth(title.getFormattedText())) / 2, guiTop + 6, 0x404040);
-		font.drawString("Ticks", guiLeft + 80, guiTop + 24, 0x404040);
+		font.drawString(title.getString(), guiLeft + (xSize - font.getStringWidth(title.getString())) / 2, guiTop + 5, 0x404040);
+		font.drawString("Ticks", guiLeft + (xSize - font.getStringWidth(title.getString())) / 2, guiTop + 40, 0x404040);
 		super.render(mouseX, mouseY, partialTicks);
 	}
 
-	protected void drawGuiBackgroundTexture(int mouseX, int mouseY, float partialTicks)
+	private void drawGuiBackgroundTexture(int mouseX, int mouseY, float partialTicks)
 	{
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-		this.blit(guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
+		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 
 	private void sendDelayPacket()
 	{
-		PacketHandler.INSTANCE.sendToServer(new PacketTimer(Integer.parseInt(delayField.getText()), pos));
+		PacketHandler.INSTANCE.sendToServer(new PacketTimer(delay, pos));
 		minecraft.player.closeScreen();
+	}
+
+	public static Runnable openGui(BlockPos pos)
+	{
+		return () -> Minecraft.getInstance().displayGuiScreen(new GuiTimer(pos));
 	}
 }

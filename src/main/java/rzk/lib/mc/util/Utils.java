@@ -2,11 +2,6 @@ package rzk.lib.mc.util;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import rzk.lib.util.ObjectUtils;
-
-import java.util.Optional;
-import java.util.function.Consumer;
 
 public final class Utils
 {
@@ -15,13 +10,8 @@ public final class Utils
 		return Direction.getFacingFromVector(end.getX() - origin.getX(), end.getY() - origin.getY(), end.getZ() - origin.getZ());
 	}
 
-	public static <T> Optional<T> getTile(World world, BlockPos pos, Class<T> clazz)
+	public static int constrain(int value, int min, int max)
 	{
-		return ObjectUtils.cast(world.getTileEntity(pos), clazz);
-	}
-
-	public static <T> void getTileAndDo(World world, BlockPos pos, Class<T> clazz, Consumer<? super T> consumer)
-	{
-		getTile(world, pos, clazz).ifPresent(consumer);
+		return value > max ? max : Math.max(value, min);
 	}
 }
