@@ -6,7 +6,7 @@
 - CHANGED: Better counter and timer gui handling
 - CHANGED: Adjusted counter renderer
 - Internal code refactoring
-- Skipped Version 1.15.2-1.1.1
+- Skipped Version 1.15.2-1.1.2
 
 ### Version 1.15.2-1.1.1:
 
